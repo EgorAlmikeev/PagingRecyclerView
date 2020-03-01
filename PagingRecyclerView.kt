@@ -1,5 +1,6 @@
 package path.to.the.file
 
+
 import android.content.Context
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -51,6 +52,12 @@ class PagingRecyclerView<ItemViewHolder : RecyclerView.ViewHolder, Item>(
                 }
             }
         })
+    }
+
+    fun setPageSize(pageSize: Int) {
+        this.pageSize = pageSize
+        restartPaging()
+        loadNextPage()
     }
 
     fun restartPaging() {
