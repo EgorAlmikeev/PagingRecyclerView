@@ -68,7 +68,7 @@ If you look for an easy way to implement pagination in your project so this is i
                               model: MyModel) {
      // imagine your holder contains a TextView named title
      holder.apply {
-       title = model.title
+       title.text = model.title
      }
    }
    ```
