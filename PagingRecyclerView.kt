@@ -18,15 +18,15 @@ class PagingRecyclerView<ItemViewHolder : RecyclerView.ViewHolder, Item>(
     // Required parameters
     var dataProvider: () -> ArrayList<Item?> = { ArrayList() }
     var loadData: (
-        searchText: String?, pageNumber: Int?, preExecuteCallback: (() -> Unit)?,
+        pageNumber: Int, pageSize: Int, preExecuteCallback: (() -> Unit)?,
         postExecuteCallback: (result: Any) -> Unit
     ) -> Unit = { _, _, preExecuteCallback, postExecuteCallback ->
         preExecuteCallback?.invoke()
         postExecuteCallback.invoke(true)
     }
 
-    private var pageSize: Int = 10
     private var nextPageNumber = 0
+    private var pageSize = 10
     private var isLoadingData = false
     private var dataSet: ArrayList<Item?> = ArrayList()
 
@@ -46,14 +46,23 @@ class PagingRecyclerView<ItemViewHolder : RecyclerView.ViewHolder, Item>(
         })
     }
 
+    fun restartPaging() {
+        nextPageNumber = 0
+        dataSet.clear()
+        refreshAdapterDataSet()
+        adapter?.notifyDataSetChanged()
+    }
+
+    fun loadFilteredPage() {
+        restartPaging()
+        loadNextPage()
+    }
+
     fun loadNextPage() {
-        loadData(null, nextPageNumber++,
+        loadData(nextPageNumber++, pageSize,
             {
                 isLoadingData = true
-                dataSet.add(null)
-                refreshAdapterDataSet()
-                adapter?.notifyItemInserted(dataSet.size - 1)
-                scrollToPosition(dataSet.size - 1)
+                displayLoadingElement()
             },
             {
                 dataSet.clear()
@@ -63,6 +72,13 @@ class PagingRecyclerView<ItemViewHolder : RecyclerView.ViewHolder, Item>(
                 isLoadingData = false
             }
         )
+    }
+
+    private fun displayLoadingElement() {
+        dataSet.add(null)
+        refreshAdapterDataSet()
+        adapter?.notifyItemInserted(dataSet.size - 1)
+        scrollToPosition(dataSet.size - 1)
     }
 
     private fun refreshAdapterDataSet() {
