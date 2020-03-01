@@ -36,7 +36,7 @@ If you look for an easy way to implement pagination in your project so this is i
    ```kotlin
    // returns a ListArray<MyModel?> of your models, 
    // which you need to display
-   fun myDataProvider() {
+   fun myDataProvider(): ArrayList<MyModel?> {
      return modelList
    }
    
