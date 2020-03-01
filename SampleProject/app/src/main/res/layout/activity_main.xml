@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MainActivity" android:orientation="vertical" android:padding="8dp"
+        android:background="@color/colorPrimary">
+
+    <SearchView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:background="@drawable/my_shape" android:id="@+id/search"
+            android:layout_marginBottom="4dp"/>
+    <projects.ealmikeew.pagingrecyclersampleproject.PagingRecyclerView android:layout_width="match_parent"
+                                                                       android:layout_height="match_parent"
+                                                                       tools:listitem="@layout/my_list_item"
+                                                                       android:id="@+id/paging"/>
+
+</LinearLayout>
