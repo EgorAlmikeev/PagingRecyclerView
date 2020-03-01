@@ -27,7 +27,7 @@ If you look for an easy way to implement pagination in your project so this is i
 
    ```kotlin
    class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-           // ViewHolder defenition
+     // ViewHolder defenition
    }
    ```
 
