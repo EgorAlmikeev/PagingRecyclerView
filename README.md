@@ -83,8 +83,7 @@ All you need to do is to create an instance of PagingRecyclerView correctly:
 ```kotlin
 // somewhere in your code...
 var paging: PagingRecyclerView<MyViewHolder, MyModel>
-paging = 
-findViewById<PagingRecyclerView<MyViewHolder, MyModel>>(R.id.paging_recycler_view).apply {
+paging = findViewById<PagingRecyclerView<MyViewHolder, MyModel>>(R.id.paging_recycler_view).apply {
   
   dataProvider = myDataProvider
   dataLoader = myDataLoader
