@@ -17,7 +17,7 @@ class PagingRecyclerView<ItemViewHolder : RecyclerView.ViewHolder, Item>(
 ) : RecyclerView(context, attributeSet) {
     // Required parameters
     var dataProvider: () -> ArrayList<Item?> = { ArrayList() }
-    var loadData: (
+    var dataLoader: (
         pageNumber: Int, pageSize: Int, preExecuteCallback: (() -> Unit)?,
         postExecuteCallback: (result: Any) -> Unit
     ) -> Unit = { _, _, preExecuteCallback, postExecuteCallback ->
@@ -59,7 +59,7 @@ class PagingRecyclerView<ItemViewHolder : RecyclerView.ViewHolder, Item>(
     }
 
     fun loadNextPage() {
-        loadData(nextPageNumber++, pageSize,
+        dataLoader(nextPageNumber++, pageSize,
             {
                 isLoadingData = true
                 displayLoadingElement()
