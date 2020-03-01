@@ -37,7 +37,7 @@ If you look for an easy way to implement pagination in your project so this is i
    // returns a ListArray<MyModel?> of your models, 
    // which you need to display
    fun myDataProvider() {
-     return modelsList
+     return modelList
    }
    
    // downloads or generates a new pack of models
