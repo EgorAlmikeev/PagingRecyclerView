@@ -84,8 +84,8 @@ All you need to do is to create an instance of PagingRecyclerView correctly:
 // somewhere in your code...
 var paging: PagingRecyclerView<MyViewHolder, MyModel> = findViewById<PagingRecyclerView<MyViewHolder, MyModel>>(R.id.paging_recycler_view).apply {
   
-  dataProvider = myDataProvider
-  dataLoader = myDataLoader
+  dataProvider = ::myDataProvider
+  dataLoader = ::myDataLoader
   
   adapter = PagingRecyclerView.PagingAdapter<MyViewHolder, MyModel>(
     R.layout.my_list_item_layout,
