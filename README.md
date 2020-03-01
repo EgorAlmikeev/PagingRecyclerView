@@ -47,14 +47,14 @@ If you look for an easy way to implement pagination in your project so this is i
      pageNumber: Int, 
      pageSize: Int, 
      preExecuteCallback: (() -> Unit)?,
-     postExecuteCallback: (result: Any) -> Unit) {
+     postExecuteCallback: () -> Unit) {
      // let it be your data downloader for example
      MyDownloader.download(pageNumber,
                            pageSize,
                            preExecuteCallback,
                            { newDataPack ->
                             modelList.addAll(newDataPack)
-                            postExecuteCallback(true)
+                            postExecuteCallback()
                            })
    }
    
@@ -64,8 +64,7 @@ If you look for an easy way to implement pagination in your project so this is i
    }
    
    // binds your ViewHolder and your model
-   fun myItemViewHolderBinder(holder: MyViewHolder,
-                              model: MyModel) {
+   fun myItemViewHolderBinder(holder: MyViewHolder, model: MyModel) {
      // imagine your holder contains a TextView named title
      holder.apply {
        title.text = model.title
@@ -82,17 +81,16 @@ All you need to do is to create an instance of PagingRecyclerView correctly:
 
 ```kotlin
 // somewhere in your code...
-var paging: PagingRecyclerView<MyViewHolder, MyModel> = findViewById<PagingRecyclerView<MyViewHolder, MyModel>>(R.id.paging_recycler_view).apply {
-  
-  dataProvider = ::myDataProvider
-  dataLoader = ::myDataLoader
-  
-  adapter = PagingRecyclerView.PagingAdapter<MyViewHolder, MyModel>(
-    R.layout.my_list_item_layout,
-    myItemViewHolderCreator,
-    myItemViewHolderBinder
-  )
-}
+var paging: PagingRecyclerView<MyViewHolder, MyModel> = findViewById(R.id.paging)
+
+paging.dataLoader = MyDataManager::myDataLoader
+paging.dataProvider = MyDataManager::myDataProvider
+
+paging.adapter = PagingRecyclerView.PagingAdapter(
+  R.layout.my_list_item,
+  ::myViewHolderCreator,
+  ::myViewHolderBinder
+)
 
 paging.loadNextPage()
 ```
