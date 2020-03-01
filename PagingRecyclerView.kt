@@ -27,10 +27,10 @@ class PagingRecyclerView<ItemViewHolder : RecyclerView.ViewHolder, Item>(
      */
     var dataLoader: (
         pageNumber: Int, pageSize: Int, preExecuteCallback: (() -> Unit)?,
-        postExecuteCallback: (result: Any) -> Unit
+        postExecuteCallback: () -> Unit
     ) -> Unit = { _, _, preExecuteCallback, postExecuteCallback ->
         preExecuteCallback?.invoke()
-        postExecuteCallback.invoke(true)
+        postExecuteCallback.invoke()
     }
 
     private var nextPageNumber = 0
