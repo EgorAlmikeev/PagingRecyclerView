@@ -54,12 +54,18 @@ class PagingRecyclerView<ItemViewHolder : RecyclerView.ViewHolder, Item>(
         })
     }
 
+    /**
+     * changes a page size of a paginating list, restarts paging and loads first page with a new size
+     */
     fun setPageSize(pageSize: Int) {
         this.pageSize = pageSize
         restartPaging()
         loadNextPage()
     }
 
+    /**
+     * restarts the pagination, drops all the parameters such as page number, data set, etc.
+     */
     fun restartPaging() {
         nextPageNumber = 0
         dataSet.clear()
@@ -67,6 +73,9 @@ class PagingRecyclerView<ItemViewHolder : RecyclerView.ViewHolder, Item>(
         adapter?.notifyDataSetChanged()
     }
 
+    /**
+     * simply loads new portion of data and displays it
+     */
     fun loadNextPage() {
         dataLoader(nextPageNumber++, pageSize,
             {
