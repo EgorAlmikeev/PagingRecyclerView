@@ -15,8 +15,15 @@ class PagingRecyclerView<ItemViewHolder : RecyclerView.ViewHolder, Item>(
     context: Context,
     attributeSet: AttributeSet
 ) : RecyclerView(context, attributeSet) {
-    // Required parameters
+
+    /**
+     * returns a ListArray<MyModel?> of your models, which you need to display
+     */
     var dataProvider: () -> ArrayList<Item?> = { ArrayList() }
+
+    /**
+     * downloads or generates a new pack of models and pushes it into a modelList returned by myDataProvider
+     */
     var dataLoader: (
         pageNumber: Int, pageSize: Int, preExecuteCallback: (() -> Unit)?,
         postExecuteCallback: (result: Any) -> Unit
@@ -53,11 +60,6 @@ class PagingRecyclerView<ItemViewHolder : RecyclerView.ViewHolder, Item>(
         adapter?.notifyDataSetChanged()
     }
 
-    fun loadFilteredPage() {
-        restartPaging()
-        loadNextPage()
-    }
-
     fun loadNextPage() {
         dataLoader(nextPageNumber++, pageSize,
             {
@@ -86,15 +88,20 @@ class PagingRecyclerView<ItemViewHolder : RecyclerView.ViewHolder, Item>(
             (adapter as PagingAdapter<ItemViewHolder, Item>).replaceDataSet(dataSet)
     }
 
-    class PagingAdapter<ItemViewHolder : ViewHolder, Item>(
+    /**
+     * @param itemViewLayoutId – id of your item layout
+     * @param itemViewHolderCreator – returns an instance of your ItemViewHolder by view
+     * @param itemViewHolderBinder – binds your ItemViewHolder and your ItemModel
+     */
+    class PagingAdapter<ItemViewHolder : ViewHolder, ItemModel>(
         private val itemViewLayoutId: Int,
-        private val itemViewCreator: (view: View) -> ItemViewHolder,
-        private val itemViewBinder: (holder: ItemViewHolder, item: Item) -> Unit
+        private val itemViewHolderCreator: (view: View) -> ItemViewHolder,
+        private val itemViewHolderBinder: (holder: ItemViewHolder, itemModel: ItemModel) -> Unit
     ) : Adapter<ViewHolder>() {
 
-        private var dataSet: ArrayList<Item?> = ArrayList()
+        private var dataSet: ArrayList<ItemModel?> = ArrayList()
 
-        fun replaceDataSet(newData: ArrayList<Item?>) {
+        fun replaceDataSet(newData: ArrayList<ItemModel?>) {
             dataSet.clear()
             dataSet.addAll(newData)
         }
@@ -124,7 +131,7 @@ class PagingRecyclerView<ItemViewHolder : RecyclerView.ViewHolder, Item>(
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
             return if (viewType == ITEM_VIEW_TYPE)
-                itemViewCreator.invoke(
+                itemViewHolderCreator.invoke(
                     LayoutInflater.from(parent.context).inflate(
                         itemViewLayoutId,
                         parent,
@@ -139,7 +146,7 @@ class PagingRecyclerView<ItemViewHolder : RecyclerView.ViewHolder, Item>(
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             if (holder.itemViewType == ITEM_VIEW_TYPE) {
-                itemViewBinder.invoke(
+                itemViewHolderBinder.invoke(
                     holder as @kotlin.ParameterName(name = "holder") ItemViewHolder,
                     dataSet[position]!!
                 )
